@@ -1,6 +1,6 @@
 {
   "name": "btcpool-export",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "author": "YihaoPeng",
   "description": "BTCPool算力导出工具",
   "license": "MIT",

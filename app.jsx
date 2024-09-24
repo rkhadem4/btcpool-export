@@ -53,6 +53,9 @@ class DataStore {
         }
 
         var parts = ak.match(/https:\/\/(?:([a-zA-Z0-9_-]+)\.)?pool\.btc\.com\/.*\baccess_key=([a-zA-Z0-9_-]+)/);
+        if (parts === null) {
+            parts = ak.match(/https:\/\/(?:([a-zA-Z0-9_-]+)\.)?cloverpool\.com\/.*\baccess_key=([a-zA-Z0-9_-]+)/);
+        }
         if (parts != null) {
             localStorage.setItem("btcpool.watch_only", "true");
             localStorage.setItem("btcpool.region", parts[1]);
@@ -78,7 +81,7 @@ class DataStore {
 
     static getEndpoint() {
         if (this.getValue("btcpool.region") == 'pre' || this.getValue("btcpool.region") == 'beta') {
-            return 'https://' + this.getValue("btcpool.region") + '.pool.btc.com' + PoolAPI.endpointSuffix;
+            return 'https://' + this.getValue("btcpool.region") + '.cloverpool.com' + PoolAPI.endpointSuffix;
         }
         return PoolAPI.defaultEndpoint;
     }
@@ -174,15 +177,15 @@ class InputAccessKey extends React.Component {
         return (
             <div>
                 <MainNavBar active="SwitchUser" />
-                <Panel header="请输入您从BTCPool获取的币看监控密钥">
+                <Panel header="请输入您从BTCPool获取的观察者链接">
                     <HidableAlert amStyle="secondary" visible={this.state.hasAlert} alertText={this.state.alertText} />
                     <Grid>
-                        <Col sm={12} md={8}><Input type="password" placeholder="币看监控密钥或观察者链接" onChange={this.handleAccessKeyChange} /></Col>
+                        <Col sm={12} md={8}><Input type="password" placeholder="观察者链接" onChange={this.handleAccessKeyChange} /></Col>
                         <Col sm={12} md={4}><Button onClick={this.handleClickNextStep}>下一步</Button></Col>
                     </Grid>
-                    <p>导出工具需要获得您的授权才能导出您在BTCPool的算力数据，而给予授权最简单的方式就是提供“币看监控密钥”或“观察者链接”。</p>
-                    <p>您可以<a href="https://pool.btc.com/dashboard">登录BTCPool</a>，点击右上角的“设置”按钮，然后选择“共享数据”，再点击“获取币看监控密钥”，最后，将其中的“AccessKey”粘贴到上方的输入框即可。您也可以点击“观察者”，新建一个观察者链接并将链接完整的粘贴到此处。</p>
-                    <p>注意，请<b>妥善保管</b>您的“币看监控密钥”，<b>不要将其提供给任何不信任的人或网站</b>。获得您的“币看监控密钥”相当于获得了您在矿池的登录状态，可以代替您在矿池进行一系列操作，包括但不限于创建子账户、切换币种等。观察者链接没有这样的风险，不过一次只能导出一个子账户的信息。</p>
+                    <p>导出工具需要获得您的授权才能导出您在BTCPool的算力数据，而给予授权最简单的方式就是提供“观察者链接”。</p>
+                    <p>您可以<a href="https://cloverpool.com/dashboard">登录BTCPool</a>，新建一个观察者链接并将链接完整的粘贴到此处。</p>
+                    <p>注意，请<b>妥善保管</b>您的“观察者链接”，<b>不要将其提供给任何不信任的人或网站</b>。获得您的“币看监控密钥”相当于获得了您在矿池的登录状态，可以代替您在矿池进行一系列操作，包括但不限于创建子账户、切换币种等。观察者链接没有这样的风险，不过一次只能导出一个子账户的信息。</p>
                 </Panel>
             </div>
         );
@@ -488,7 +491,7 @@ class ExitPage extends React.Component {
 }
 
 class PoolAPI {
-    static defaultEndpoint = 'https://pool.api.btc.com/v1';
+    static defaultEndpoint = 'https://pool.api.cloverpool.com/v1';
     static endpointSuffix = '/v1';
 
     static ak() {
